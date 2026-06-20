@@ -1,62 +1,12 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import SoftSkills from "./SoftSkills";
-import SchedulerCalendar from "./SchedulerCalendar";
-
-function App() {
-  return (
-    <Router>
-      {/* Main Container */}
-      <div style={{ fontFamily: "sans-serif", minHeight: "100vh" }}>
-        
-        {/* Navigation Bar */}
-        <nav
-          style={{
-            background: "#2c3e50",
-            padding: "15px 30px",
-            display: "flex",
-            gap: "20px",
-            justifyContent: "center",
-          }}
-        >
-          <Link to="/" style={{ color: "white", textDecoration: "none", fontWeight: "bold" }}>
-            Home
-          </Link>
-          <Link to="/softskills" style={{ color: "white", textDecoration: "none", fontWeight: "bold" }}>
-            Soft Skills
-          </Link>
-          <Link to="/scheduler" style={{ color: "white", textDecoration: "none", fontWeight: "bold" }}>
-            Scheduler
-          </Link>
-        </nav>
-
-        {/* Content Area */}
-        <Routes>
-          <Route 
-            path="/" 
-            element={<div style={{ textAlign: "center", marginTop: "50px" }}><h1>Welcome to ScholarBot</h1></div>} 
-          />
-          <Route path="/softskills" element={<SoftSkills />} />
-          <Route path="/scheduler" element={<SchedulerCalendar />} />
-        </Routes>
-
-      </div>
-    </Router>
-  );
-}
-
-export default App;
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-// 1. ACTIVE COMPONENT (Moved already)
+// Components organized cleanly inside modular feature folders
 import FocusTimer from './features/timer/components/FocusTimer';
-
-// 2. TEMPORARILY COMMENTED OUT (Uncomment these one-by-one as you copy them into the folders on upcoming days!)
-// import ScheduleCalendar from './features/planner/components/ScheduleCalendar';
-// import SoftSkills from './features/dashboard/components/SoftSkills';
-// import ExamPlanner from './features/planner/components/ExamPlanner';
 import Dashboard from './features/dashboard/components/Dashboard';
+import SoftSkills from "./features/dashboard/components/SoftSkills";
+import SchedulerCalendar from "./features/planner/components/SchedulerCalendar";
+import ExamPlanner from "./features/planner/components/ExamPlanner";
 
 import './App.css';
 
@@ -71,23 +21,13 @@ export default function App() {
 
   const [notes, setNotes] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState('');
-  const [newNote, setNewNote] = useState({ title: '', content: '' });
   const [documentViewerText, setDocumentViewerText] = useState('');
-  const [isAiSummarizing, setIsAiSummarizing] = useState(false);
 
   const [syllabus, setSyllabus] = useState([]);
-  const [newSyllabusItem, setNewSyllabusItem] = useState({ name: '', progress: 50 });
-  const [selectedPredefinedSyllabus, setSelectedPredefinedSyllabus] = useState('');
 
   const [chatMessages, setChatMessages] = useState([{ sender: 'bot', text: 'Hello! I am ScholarBot. Your AI text processing models are operational. Ask me anything about your syllabus subjects!' }]);
-  const [inputMessage, setInputMessage] = useState('');
-  const [isChatLoading, setIsChatLoading] = useState(false);
 
-  const [quizSubject, setQuizSubject] = useState('');
-  const [quizQuestions, setQuizQuestions] = useState([]);
-  const [currentQuizAnswers, setCurrentQuizAnswers] = useState({});
   const [quizScore, setQuizScore] = useState(null);
-
   const [totalStudyMinutes, setTotalStudyMinutes] = useState(8520);
   const [leaderboardUsers, setLeaderboardUsers] = useState([]);
 
@@ -204,9 +144,6 @@ export default function App() {
 
       {/* CORE ACTIVE RUNTIME PANEL VIEWPORT */}
       <main className="main flex-1 flex flex-col overflow-hidden bg-[#0a0a0f]">
-        
-        
-
         <div className="page-content flex-1 p-6 md:p-8 overflow-y-auto">
           
           {currentTab === 'dashboard' && (
@@ -219,10 +156,18 @@ export default function App() {
             </div>
           )}
 
-          {/* Placeholder panels until components are physically pasted */}
-          {currentTab === 'schedule' && <div className="p-4 bg-[#111118] border border-white/5 rounded-xl text-slate-400">Schedule Calendar view pending migration.</div>}
-          {currentTab === 'soft-skills' && <div className="p-4 bg-[#111118] border border-white/5 rounded-xl text-slate-400">Soft Skills tracking panel pending migration.</div>}
-          {currentTab === 'exam-planner' && <div className="p-4 bg-[#111118] border border-white/5 rounded-xl text-slate-400">AI Exam Planner blueprint view pending migration.</div>}
+          {currentTab === 'schedule' && (
+            <SchedulerCalendar />
+          )}
+
+          {currentTab === 'soft-skills' && (
+            <SoftSkills />
+          )}
+
+          {/* Active Exam Planner tracking component with current database syllabus passing dependency */}
+          {currentTab === 'exam-planner' && (
+            <ExamPlanner syllabus={syllabus} />
+          )}
 
           {currentTab === 'notes' && (
             <div className="space-y-4">
@@ -278,3 +223,4 @@ export default function App() {
     </div>
   );
 }
+//last update by Amrita
