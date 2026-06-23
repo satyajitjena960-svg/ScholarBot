@@ -7,6 +7,7 @@ import Dashboard from './features/dashboard/components/Dashboard';
 import SoftSkills from "./features/dashboard/components/SoftSkills";
 import SchedulerCalendar from "./features/planner/components/SchedulerCalendar";
 import ExamPlanner from "./features/planner/components/ExamPlanner";
+import AiAssistant from "./features/ai-assistant/components/AiAssistant";
 
 import './App.css';
 
@@ -196,16 +197,8 @@ export default function App() {
           )}
 
           {currentTab === 'ai-assistant' && (
-            <div className="chat-wrap flex flex-col bg-[#111118] border border-white/5 rounded-xl p-4 max-w-3xl mx-auto h-[70vh]">
-              <div className="chat-messages flex-1 overflow-y-auto space-y-3 pr-2">
-                {chatMessages.map((msg, i) => (
-                  <div key={i} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`p-3 rounded-xl text-sm max-w-[75%] ${msg.sender === 'user' ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-200 border border-white/5'}`}>{msg.text}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+  <AiAssistant />
+)}
 
           {currentTab === 'leaderboard' && (
             <div className="space-y-2 max-w-2xl">
