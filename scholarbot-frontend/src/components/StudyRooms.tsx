@@ -287,3 +287,4 @@ export default function StudyRooms({ user }: StudyRoomsProps) {
     </div>
   );
 }
+//update
