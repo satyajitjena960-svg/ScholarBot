@@ -120,21 +120,26 @@ export default function Notes({ user, notes = [], onRefresh }) {
     }
   };
 
-  const handleDeleteNote = async (noteId) => {
-    if (!confirm('Are you sure you want to delete this note?')) return;
-    try {
-      const response = await fetch(`/api/notes/${noteId}`, {
-        method: 'DELETE'
-      });
+ const handleDeleteNote = async (noteId) => {
+  if (!window.confirm("Are you sure you want to delete this note?")) return;
 
-      if (response.ok) {
-        setSelectedNote(null);
-        if (onRefresh) onRefresh();
-      }
-    } catch (err) {
-      console.error('Failed to delete note:', err);
+  try {
+    const res = await fetch(`/api/notes/${noteId}`, {
+      method: "DELETE", // 👈 Make sure method is explicitly DELETE
+    });
+
+    if (res.ok) {
+      alert("Note deleted successfully!");
+      onRefresh(user.id); // 🔄 Refresh your dashboard grid state container
+    } else {
+      const data = await res.json();
+      alert(data.error || "Failed to delete note.");
     }
-  };
+  } catch (err) {
+    console.error("Error deleting note:", err);
+    alert("Could not connect to the backend.");
+  }
+};
 
   const handleAISummarize = async () => {
     if (!selectedNote) return;
