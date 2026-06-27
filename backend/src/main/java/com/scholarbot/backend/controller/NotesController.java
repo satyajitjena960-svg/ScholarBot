@@ -55,12 +55,16 @@ public class NotesController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/notes/{id}")
-    public ResponseEntity<?> deleteNote(@PathVariable String id) {
-        notesService.deleteNote(id);
-        return ResponseEntity.ok(Map.of("success", true));
+   // 🚀 FIX: Ensure the ID parameter is a String to match your new UUID schema!
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteNote(@PathVariable("id") String id) {
+        if (!noteRepository.existsById(id)) {
+            return ResponseEntity.status(404).body(Map.of("error", "Note not found"));
+        }
+        
+        noteRepository.deleteById(id);
+        return ResponseEntity.ok(Map.of("message", "Note deleted successfully"));
     }
-
     @PostMapping("/notes/{id}/ai-summarize")
     public ResponseEntity<?> aiSummarize(@PathVariable String id) {
         return notesService.aiSummarizeAndGenerateFlashcards(id)
